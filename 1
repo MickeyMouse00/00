@@ -1,0 +1,73 @@
+#!/bin/sh -
+clear
+# Copyright BYETFAST
+# SSH TLS
+# MINERADOR BY: FENIX_LINUX  
+#-------------------------------------------
+#	QUEM FEZ FOI O FENIX EU SÓ EDITEI	
+#-------------------------------------------
+# Oque importa é a mineração kkkkkkkk
+#
+bash=$(echo $BASH)
+
+
+if [ "$bash" = "/bin/bash" ]
+then
+exit 0
+fi
+
+core=$2
+wallet=$1
+carteira_exemplo=48AkqvoPkr1UmSy4CwUT6zU8dtyUBZ6i3Q6FcXaAgHB9bPRfS347zhQjXqrT3anyZ22j7DEE74GkbVcQFyH2nNiC3hapHij
+if [ "$1" = ""  ]
+then
+echo "			\033[41;1;37m Minerar Monero \033[0m "				
+echo "\033[34m Forma de USO: \033[0m"
+echo "sudo sh $0 \033[31m Carteira de XMR \033[32m Numero de nucleos \033[0m  \n "
+echo "\033[33m Exemplo:\033[0m"
+echo "sudo sh $0 \033[31m $carteira_exemplo \033[32m 2 \033[0m   \n"
+exit 0
+fi
+if [ "$2" = ""  ]
+then
+echo "\033[01;33m=====================================================================\033[01;0m"
+echo "\033[01;37;41mERROR:2 'ADICIONE O NUMERO DE NUCLEOS' Ao final Do Arquivo..\033[0m"
+echo "\033[01;33m=====================================================================\033[01;0m"
+exit 0
+fi
+
+echo "			\033[41;1;37m Minerar XMR \033[0m "	
+sleep 1
+echo "CARTEIRA CONFIGURADA : \033[01;32m $wallet\033[0m   "
+echo "\033[01;31m	 * Minerar Monero na http://supportxmr.com \033[0m   \n"
+echo "\033[01;32m ETAPA [1/2] iniciada"
+sleep 1
+sudo apt-get update >/dev/null
+sudo apt-get install git -y >/dev/null
+sudo apt-get install screen -y >/dev/null
+sudo apt-get install build-essential libcurl4-openssl-dev gcc make git nano autoconf automake -y >/dev/null
+sudo rm -r cpuminer-multi 
+git clone https://github.com/LucasJones/cpuminer-multi
+clear
+echo "\033[01;32m ETAPA [1/2] Completo"
+sleep 1
+clear
+clear
+echo "\033[01;32m ETAPA [2/2] iniciada"
+sleep 1
+echo "\033[44;1;37m Configurando e Compilando Recursos..... \033[0m "
+sleep 1
+cd cpuminer-multi/
+chmod +x autogen.sh
+./autogen.sh
+CFLAGS="-march=native" ./configure
+make
+sudo make install
+cd cpuminer-multi
+sudo mv minerd /usr/local/bin/
+echo "\033[01;32m ETAPA [2/2] completa"
+sleep 1
+clear
+clear
+echo "\033[01;32m Mineraçao Iniciada ... \033[0m \n"
+minerd -a cryptonight -o stratum+tcp://pool.supportxmr.com:3333 -u $wallet -p AWS -t $core -R 1 -B
